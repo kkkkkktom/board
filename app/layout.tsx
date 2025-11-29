@@ -12,6 +12,8 @@ import "./globals.css";
 
 import { Toaster } from "@/components/ui/sonner";
 import { ConvexClientProvider } from "@/provider/convex-client-provider";
+import ModalProvider from "@/provider/modal-provider";
+import RenameModal from "@/components/modals/rename-modal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,8 +44,10 @@ export default function RootLayout({
           publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
         >
           <ConvexClientProvider>
-            <Toaster />
             {children}
+            <RenameModal />
+            <Toaster />
+            <ModalProvider />
           </ConvexClientProvider>
         </ClerkProvider>
       </body>
