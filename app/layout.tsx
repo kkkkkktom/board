@@ -9,6 +9,8 @@ import {
 } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+import { Toaster } from "@/components/ui/sonner";
 import { ConvexClientProvider } from "@/provider/convex-client-provider";
 
 const geistSans = Geist({
@@ -39,7 +41,10 @@ export default function RootLayout({
         <ClerkProvider
           publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
         >
-          <ConvexClientProvider>{children}</ConvexClientProvider>
+          <ConvexClientProvider>
+            <Toaster />
+            {children}
+          </ConvexClientProvider>
         </ClerkProvider>
       </body>
     </html>
