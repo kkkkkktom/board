@@ -16,6 +16,8 @@ import { ConvexClientProvider } from "@/provider/convex-client-provider";
 import ModalProvider from "@/provider/modal-provider";
 import RenameModal from "@/components/modals/rename-modal";
 
+import { LiveblocksProvider } from "@liveblocks/react";
+
 const NunitoSans = Nunito_Sans({
   subsets: ["latin"],
   weight: "400",
