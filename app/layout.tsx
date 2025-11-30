@@ -9,21 +9,29 @@ import {
 } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Nunito_Sans } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 import { ConvexClientProvider } from "@/provider/convex-client-provider";
 import ModalProvider from "@/provider/modal-provider";
 import RenameModal from "@/components/modals/rename-modal";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const NunitoSans = Nunito_Sans({
   subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-nunito-sans",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Clerk Next.js Quickstart",
@@ -37,9 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${NunitoSans.variable}`}>
         <ClerkProvider
           publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
         >

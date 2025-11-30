@@ -9,8 +9,10 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { useOrganization } from "@clerk/nextjs";
 import useApiMutation from "@/hooks/use-api-mutation";
+import { useRouter } from "next/navigation";
 
 export const EmptyBoard = () => {
+  const router = useRouter();
   const { organization } = useOrganization();
   const { mutate, pending } = useApiMutation(api.board.create);
 
@@ -23,7 +25,8 @@ export const EmptyBoard = () => {
       title: "Untitled",
     })
       .then((id) => {
-        toast.success("Board created");
+        toast.success("创建成功");
+        router.push(`/board/${id}`);
       })
       .catch(() => toast.error("Failed to create board"));
   };
@@ -31,7 +34,7 @@ export const EmptyBoard = () => {
   return (
     <div className="h-full flex flex-col items-center justify-center">
       <Image src="/note.svg" height={110} width={110} alt="Empty" />
-      <h2 className="text-2xl font-semibold mt-6">Create your first board!</h2>
+      <h2 className="text-2xl font-semibold mt-6">创造你的第一个模版吧～</h2>
       <p className="text-muted-foregrounf text-sm mt-2">
         Start by creating a board for your orgnization
       </p>

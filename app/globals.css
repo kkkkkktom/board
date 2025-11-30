@@ -8,6 +8,7 @@ body,
 :root {
   height: 100vh;
   min-height: 100vh;
+  font-family: var(--font-nunito-sans), sans-serif;
 }
 
 @theme inline {

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "convex/react";
 import { Plus } from "lucide-react";
 import { totalmem } from "os";
+import { useRouter } from "next/navigation";
 
 interface NewBoardButtonProps {
   orgId: string;
@@ -18,6 +19,7 @@ export default function NewBoardButton({
   orgId,
   disabled,
 }: NewBoardButtonProps) {
+  const router = useRouter();
   const { mutate, pending } = useApiMutation(api.board.create);
   const onClick = () => {
     mutate({
@@ -25,10 +27,10 @@ export default function NewBoardButton({
       title: "Untitle",
     })
       .then((id) => {
-        toast.success("Board created");
-        //TODO:Redirect to /board/{id}
+        toast.success("创建成功");
+        router.push(`/board/${id}`);
       })
-      .catch(() => toast.error("Failed to create board"));
+      .catch(() => toast.error("创建失败"));
   };
 
   return (

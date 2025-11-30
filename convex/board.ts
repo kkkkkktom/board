@@ -37,14 +37,27 @@ export const create = mutation({
 
 export const remove = mutation({
     args: { id: v.id("boards") },
-    handler: async (convexToJson, args) => {
-        const identity = await convexToJson.auth.getUserIdentity();
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
 
         if (!identity) {
             throw new Error("Unauthorizaed");
         }
         //todo:later check to delete favorite realtion as well
-        await convexToJson.db.delete(args.id)
+
+        const userId = identity.subject;
+        const existingFavorite = await ctx.db.query("userFavorites")
+            .withIndex("by_user_board", (q) =>
+                q
+                    .eq("userId", userId)
+                    .eq("boardId", args.id)
+            )
+            .unique();
+        if (existingFavorite) {
+            await ctx.db.delete(existingFavorite._id)
+        }
+
+        await ctx.db.delete(args.id)
     }
 })
 
@@ -85,15 +98,14 @@ export const favorite = mutation({
         const userId = identity.subject;
         const existingFavorite = await ctx.db
             .query("userFavorites")
-            .withIndex("by_user_board_org", (q) => q
+            .withIndex("by_user_board", (q) => q
                 .eq("userId", userId)
                 .eq("boardId", board._id)
-                .eq("orgId", args.orgId)
             )
             .unique();
 
         if (existingFavorite) {
-            throw new Error("已经存在最喜欢的模版")
+            throw new Error("该模版已经收藏")
         }
         await ctx.db.insert("userFavorites", {
             userId,
@@ -129,7 +141,7 @@ export const unfavorite = mutation({
 
 
         if (!existingFavorite) {
-            throw new Error("没有找搭配最喜欢的模版")
+            throw new Error("没有找到收藏的模版")
         }
         await ctx.db.delete(existingFavorite._id)
 
