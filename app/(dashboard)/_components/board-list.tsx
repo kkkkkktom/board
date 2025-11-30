@@ -42,7 +42,11 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
     return <EmptySearch />;
   }
   if (!data?.length && query.favorites) {
-    return <EmptyFavorites />;
+    return (
+      <>
+        <EmptyFavorites />
+      </>
+    );
   }
   if (!data?.length) {
     return <EmptyBoard />;
@@ -64,7 +68,7 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
             authorName={board.authorName}
             createdAt={board._creationTime}
             orgId={board.orgId}
-            isFavorite={false}
+            isFavorite={board.isFavorite}
           />
         ))}
       </div>

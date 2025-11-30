@@ -1,6 +1,7 @@
 import { v } from 'convex/values';
 
 import { query } from './_generated/server';
+import { favorite } from './board';
 
 export const get = query({
     args: {
@@ -14,12 +15,27 @@ export const get = query({
         }
 
         const boards = await ctx.db
-            .query("board")//教程这里是boards，之后注意看schema中的表名
+            .query("boards")//教程这里是boards，之后注意看schema中的表名
             .withIndex("by_org", (q) => q.eq("orgId", args.orgId))
             .order("desc")
             .collect()
-
-        return boards
+        const boardsWithFavoriteRelation = boards.map((board) => {
+            return ctx.db.query("userFavorites")
+                .withIndex("by_user_board", (q) =>
+                    q
+                        .eq("userId", identity.subject)
+                        .eq("boardId", board._id)
+                )
+                .unique()
+                .then((favorite) => {
+                    return {
+                        ...board,
+                        isFavorite: !!favorite
+                    }
+                })
+        })
+        const boardsWithFavoriteBoolean = Promise.all(boardsWithFavoriteRelation)
+        return boardsWithFavoriteBoolean
 
     }
 })
