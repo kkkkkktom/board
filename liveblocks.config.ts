@@ -6,9 +6,8 @@ declare global {
   interface Liveblocks {
     // Each user's Presence, for useMyPresence, useOthers, etc.
     Presence: {
-
       // Example, real-time cursor coordinates
-      // cursor: { x: number; y: number };
+      cursor: { x: number; y: number } | null;
     };
 
     // The Storage tree for the room, for useMutation, useStorage, etc.
@@ -49,6 +48,7 @@ declare global {
 }
 
 export const client = createClient({
+  throttle: 16,
   publicApiKey: 'dilP6TZVJSfCzr6R6aEw5GJ6c'
 })
 
