@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     }
 
     const userInfo = {
-        name: user.firstName || "匿名",
+        name: user.firstName || "队员",
         picture: user.imageUrl
     }
 

@@ -18,7 +18,7 @@ export default function Canvas({ boardId }: CanvasProps) {
       className="h-full w-full relative bg-neutral-100 touch-none"
       style={{ backgroundColor: "#f5f5f5" }}
     >
-      <Info />
+      <Info boardId={boardId} />
       <Participants />
       <Toolbar />
     </main>
