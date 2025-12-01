@@ -8,11 +8,12 @@ interface BoardIdPageProps {
   };
 }
 
-export default function BoardPage({ params }: BoardIdPageProps) {
-  return <Loading></Loading>;
+export default async function BoardPage({ params }: BoardIdPageProps) {
+  //   return <Loading></Loading>;
+  const boardId = params.boardId;
   return (
-    <Room roomId={params.boardId} fallback={<Loading />}>
-      <Canvas boardId={params.boardId} />
+    <Room roomId={boardId} fallback={<Loading />}>
+      <Canvas boardId={boardId} />
     </Room>
   );
 }

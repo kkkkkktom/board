@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { ClientSideSuspense, LiveblocksProvider } from "@liveblocks/react";
 
 import { RoomProvider } from "@liveblocks/react";
+import { Loading } from "./auth/Loading";
 
 interface RoomProps {
   children: ReactNode;
@@ -13,14 +14,10 @@ interface RoomProps {
 
 export const Room = ({ children, roomId, fallback }: RoomProps) => {
   return (
-    <LiveblocksProvider
-      publicApiKey={
-        "pk_dev_dWQ5kOWeJPZdaCqlDZGW-kTcFhJWijKlQk2J6GldilP6TZVJSfCzr6R6aEw5GJ6c"
-      }
-    >
-      <RoomProvider id="my-room">
-        <ClientSideSuspense fallback={fallback}>{children}</ClientSideSuspense>
-      </RoomProvider>
+    <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
+      <ClientSideSuspense fallback={fallback}>
+        <RoomProvider id={roomId}>{children}</RoomProvider>
+      </ClientSideSuspense>
     </LiveblocksProvider>
   );
 };
