@@ -29,6 +29,7 @@ import { connectionIdToColor, pointerEventToCanvasPoint } from "@/lib/utils";
 import { useStorage } from "@liveblocks/react/suspense";
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./layer-preview";
+import { SelectionBox } from "./selection-box";
 
 const MAX_LAYERS = 100;
 
@@ -191,6 +192,7 @@ export default function Canvas({ boardId }: CanvasProps) {
               selectionColor={layerIdsToColorSelection[layerId]}
             ></LayerPreview>
           ))}
+          <SelectionBox onResizeHandlePointerDown={() => {}} />
           <CursorPresence></CursorPresence>
         </g>
       </svg>
