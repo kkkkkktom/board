@@ -28,7 +28,7 @@ export const LayerPreview = memo(
           ></Rectangle>
         );
       default:
-        console.log("unkown layer type");
+        // console.log("unkown layer type");
         return null;
     }
   }

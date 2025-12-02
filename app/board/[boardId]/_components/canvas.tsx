@@ -14,6 +14,8 @@ import {
   Color,
   LayerType,
   Point,
+  Side,
+  XYWH,
 } from "@/types/canvas";
 
 import {
@@ -25,7 +27,11 @@ import {
   useOthersMapped,
 } from "@liveblocks/react/suspense";
 import { CursorPresence } from "./cursor-presence";
-import { connectionIdToColor, pointerEventToCanvasPoint } from "@/lib/utils";
+import {
+  connectionIdToColor,
+  pointerEventToCanvasPoint,
+  resizeBounds,
+} from "@/lib/utils";
 import { useStorage } from "@liveblocks/react/suspense";
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./layer-preview";
@@ -88,6 +94,41 @@ export default function Canvas({ boardId }: CanvasProps) {
     [lastUsedColor]
   );
 
+  const resizeSelectedLayer = useMutation(
+    ({ storage, self }, point: Point) => {
+      if (canvasState.mode !== CanvasMode.Resizing) {
+        return;
+      }
+
+      const bounds = resizeBounds(
+        canvasState.initialBounds,
+        canvasState.corner,
+        point
+      );
+
+      const liveLayers = storage.get("layers");
+      const layer = liveLayers.get(self.presence.selection[0]);
+
+      if (layer) {
+        layer.update(bounds);
+      }
+    },
+    [canvasState]
+  );
+
+  const onResizeHandlePointerDown = useCallback(
+    (corner: Side, initialBounds: XYWH) => {
+      // console.log(corner, initialBounds);
+      history.pause();
+      setCanvasState({
+        mode: CanvasMode.Resizing,
+        initialBounds,
+        corner,
+      });
+    },
+    [history]
+  );
+
   const onWheel = useCallback((e: React.WheelEvent) => {
     setCamera((camera) => ({
       x: camera.x - e.deltaX,
@@ -99,10 +140,15 @@ export default function Canvas({ boardId }: CanvasProps) {
     ({ setMyPresence }, e: React.PointerEvent) => {
       e.preventDefault();
       const current = pointerEventToCanvasPoint(e, camera);
+
+      if (canvasState.mode === CanvasMode.Resizing) {
+        resizeSelectedLayer(current);
+      }
       setMyPresence({ cursor: current });
     },
-    []
+    [canvasState, resizeSelectedLayer, camera]
   );
+
   const onPointerLeave = useMutation(({ setMyPresence }) => {
     setMyPresence({ cursor: null });
   }, []);
@@ -111,7 +157,7 @@ export default function Canvas({ boardId }: CanvasProps) {
     ({}, e) => {
       const point = pointerEventToCanvasPoint(e, camera);
 
-      console.log("point", { point, mode: canvasState.mode });
+      // console.log("point", { point, mode: canvasState.mode });
 
       if (canvasState.mode === CanvasMode.Inserting) {
         insertLayer(canvasState.layerType, point);
@@ -192,7 +238,7 @@ export default function Canvas({ boardId }: CanvasProps) {
               selectionColor={layerIdsToColorSelection[layerId]}
             ></LayerPreview>
           ))}
-          <SelectionBox onResizeHandlePointerDown={() => {}} />
+          <SelectionBox onResizeHandlePointerDown={onResizeHandlePointerDown} />
           <CursorPresence></CursorPresence>
         </g>
       </svg>
