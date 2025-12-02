@@ -10,7 +10,6 @@ export const Participants = () => {
   const users = useOthers();
   const currentUser = useSelf();
   const hasMoreUsers = users.length > MAX_SHOW_USERS;
-  console.log(users);
 
   return (
     <div
