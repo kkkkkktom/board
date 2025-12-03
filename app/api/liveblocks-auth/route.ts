@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { Liveblocks } from "@liveblocks/node";
 
 import { auth, currentUser } from '@clerk/nextjs/server'
