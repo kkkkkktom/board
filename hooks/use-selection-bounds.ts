@@ -17,7 +17,7 @@ const boundingBox = (layers: Layer[]): XYWH | null => {
     for (let i = 1; i < layers.length; i++) {
         const { x, y, width, height } = layers[i];
 
-        if (left < x) {
+        if (x < left) {
             left = x;
         }
 
@@ -29,8 +29,8 @@ const boundingBox = (layers: Layer[]): XYWH | null => {
             top = y;
         }
 
-        if (bottom < y + height) {
-            bottom = y
+        if (y + height > bottom) {
+            bottom = y + height;
         }
     }
     return {
