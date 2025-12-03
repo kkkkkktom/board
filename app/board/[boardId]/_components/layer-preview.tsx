@@ -8,6 +8,8 @@ import { Ellipsis } from "lucide-react";
 import { Text } from "./text";
 import { Ellipse } from "./ellipse";
 import { Note } from "./note";
+import { Path } from "./path";
+import { colorToCss } from "@/lib/utils";
 
 interface LayerPreviewProps {
   id: string;
@@ -22,6 +24,18 @@ export const LayerPreview = memo(
       return null;
     }
     switch (layer.type) {
+      case LayerType.Path:
+        return (
+          <Path
+            x={layer.x}
+            y={layer.y}
+            fill={layer.fill ? colorToCss(layer.fill) : "#000"}
+            key={id}
+            points={layer.points}
+            onPointerDown={(e) => onLayerPointerDown(e, id)}
+            stroke={selectionColor}
+          ></Path>
+        );
       case LayerType.Note:
         return (
           <Note
@@ -59,7 +73,7 @@ export const LayerPreview = memo(
           ></Rectangle>
         );
       default:
-        // console.log("unkown layer type");
+        console.log("unkown layer type");
         return null;
     }
   }
