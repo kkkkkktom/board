@@ -49,7 +49,7 @@ export const Info = ({ boardId }: InfoProps) => {
       <Hint label="返回主界面" side="bottom" sideOffset={10}>
         <Button asChild variant="board" className="p-2">
           <Link href="/">
-            <Image src="/logo.svg" alt="Board logo" height={40} width={40} />
+            <Image src="/logo.png" alt="Board logo" height={40} width={40} />
             <span
               className={cn(
                 "font-semibold text-xl ml-2 text-black",

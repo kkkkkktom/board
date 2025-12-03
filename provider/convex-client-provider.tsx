@@ -1,5 +1,5 @@
 "use client";
-import { ClerkProvider, useAuth } from "@clerk/nextjs";
+import { ClerkProvider, RedirectToSignIn, useAuth } from "@clerk/nextjs";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import {
   AuthLoading,
@@ -25,12 +25,7 @@ export const ConvexClientProvider = ({
         <Loading />
       </AuthLoading>
       <Unauthenticated>
-        <div
-          style={{ padding: "50px", textAlign: "center", background: "yellow" }}
-        >
-          <h1>请登录以查看内容</h1>
-          <SignInButton />
-        </div>
+        <RedirectToSignIn />
       </Unauthenticated>
     </ConvexProviderWithClerk>
   );
