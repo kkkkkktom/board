@@ -4,6 +4,10 @@ import { LayerType } from "@/types/canvas";
 import { useStorage } from "@liveblocks/react/suspense";
 import { memo } from "react";
 import { Rectangle } from "./rectangle";
+import { Ellipsis } from "lucide-react";
+import { Text } from "./text";
+import { Ellipse } from "./ellipse";
+import { Note } from "./note";
 
 interface LayerPreviewProps {
   id: string;
@@ -18,6 +22,33 @@ export const LayerPreview = memo(
       return null;
     }
     switch (layer.type) {
+      case LayerType.Note:
+        return (
+          <Note
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          ></Note>
+        );
+      case LayerType.Text:
+        return (
+          <Text
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          ></Text>
+        );
+      case LayerType.Ellipse:
+        return (
+          <Ellipse
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        );
       case LayerType.Rectangle:
         return (
           <Rectangle
